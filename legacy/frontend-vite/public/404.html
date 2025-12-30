@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        // Redirect all routes to index.html with hash
+        var path = window.location.pathname.replace('/Synthia123/', '');
+        if (path && path !== '/') {
+            window.location.href = '/Synthia123/#' + path;
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans transition-colors duration-300 dark:bg-slate-900">
+    <div id="root"></div>
+</body>
+</html>

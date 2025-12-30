@@ -1,0 +1,8 @@
+{
+  "name": "Synthia Dashboard",
+  "description": "A comprehensive React collaboration platform featuring a dashboard, calendar, task management (Kanban/List), meetings, and workspace chat.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
