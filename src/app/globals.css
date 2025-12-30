@@ -24,6 +24,11 @@
     --input: 240 5.9% 90%;
     --ring: 262 83% 58%;
     --radius: 0.75rem;
+
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
+    --safe-left: env(safe-area-inset-left);
+    --safe-right: env(safe-area-inset-right);
   }
 
   .dark {
@@ -60,5 +65,30 @@
 @layer utilities {
   .glass {
     @apply bg-white/10 backdrop-blur-md border border-white/10;
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .mobile-sheet {
+    @apply w-full md:max-w-lg;
+  }
+
+  .mobile-card {
+    @apply rounded-xl border bg-card text-card-foreground shadow-sm;
+  }
+
+  .scroll-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
 }

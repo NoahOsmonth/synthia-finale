@@ -104,9 +104,65 @@ root/
   - Dialogs → **full-screen sheet** on mobile
 - Always respect notches: use safe-area padding (`env(safe-area-inset-*)`) in shells/footers.
 
+### Breakpoints (standard)
+- Mobile: `< 768px` (`md` breakpoint)
+- Tablet: `768–1023px`
+- Desktop: `>= 1024px`
+
+### Touch target standards
+- Minimum tap target: **44×44px** (buttons, icons, list rows, close controls).
+- Critical call controls (mic/camera/leave): prefer **56px** button height on mobile.
+- Inputs on mobile must be `>= 16px` font-size to prevent iOS zoom-on-focus.
+
 ### Navigation rule (no duplicated pages)
 - Do NOT create separate “/mobile” routes.
 - Use one App Router tree; mobile vs desktop differences live in the **shell/navigation components** only.
+
+### Navigation patterns (implemented)
+- Desktop primary navigation: left sidebar (`src/components/shared/sidebar.tsx`), visible at `md+`.
+- Mobile primary navigation: bottom tabs (`src/components/shared/bottom-nav.tsx`), visible below `md`.
+- Mobile secondary navigation: hamburger + drawer (`src/components/shared/nav-drawer.tsx`).
+- Route files stay thin; mobile/desktop deltas happen in the shell (`src/components/shared/app-shell.tsx`) and UI components.
+
+### Modal patterns (implemented)
+- Use **Sheet** for mobile-first overlays (`src/components/ui/sheet.tsx`):
+  - Mobile: full-screen slide-up sheet (`h-dvh`), safe-area aware
+  - Desktop: centered dialog-style panel
+- Avoid bespoke, page-local modal stacks; prefer shared primitives.
+
+### Layout primitives (Required for all screens)
+
+**All new screens must use standardized layout components:**
+
+1. **Screen container** (`src/components/shell/screen.tsx`)
+   - Wrap all page content in `<Screen>`
+   - Use `<Screen.Header>` for page title/description
+   - Use `<Screen.Content>` for main content
+   - Variants: `fullWidth` (edge-to-edge), `noPadding` (custom layout)
+   - **Do NOT** manually add padding/background divs
+
+2. **Primary actions** (`src/components/shell/primary-action.tsx`)
+   - Use `<PrimaryAction>` for main page actions (New, Create, Add)
+   - Mobile: renders as FAB (bottom-right, above bottom-nav)
+   - Desktop: renders as inline button
+   - **Do NOT** create custom FABs or sticky CTAs per page
+
+3. **Secondary surfaces** (`src/components/shell/panel.tsx`)
+   - Use `<Panel>` for details, filters, settings
+   - Mobile: full-screen sheet
+   - Desktop: side panel (left/right, fixed/overlay)
+   - **Do NOT** use raw `<Sheet>` for page-level panels (Sheet is for dialogs/modals only)
+
+4. **Data display** (`src/components/ui/responsive-table.tsx`)
+   - Use `<ResponsiveTable>` for lists/tables
+   - Desktop: table layout
+   - Mobile: stacked cards
+   - Enable virtualization for large datasets (`virtualizeMobile={true}`)
+
+**Enforcement:**
+- Route files (`src/app/**/page.tsx`) must only import feature pages
+- Feature pages (`src/features/**/`) must use these primitives
+- Code reviews must reject manual layout implementation
 
 ### Transcription on mobile (high-risk UX)
 - Must handle: mic permission, interruptions, network drops, screen lock.
@@ -125,3 +181,14 @@ root/
   - shell caching
   - offline fallback screen for library browsing
 - Never cache or store raw audio; transcripts/summaries only.
+
+### Connectivity + install UX (implemented)
+- Offline indicator banner: `src/components/shared/offline-banner.tsx`
+- Install prompt banner (mobile-only): `src/components/shared/install-prompt.tsx`
+- Transcription banner: `src/components/features/mobile-transcription-banner.tsx`
+
+### PWA update strategy (required behavior)
+- Service worker lives at `public/sw.js` and must be treated as a **release artifact**.
+- When changing offline behavior or cache policy, bump cache keys in `public/sw.js` (e.g., `synthia-shell-v2`) to force refresh.
+- Expect update semantics: users may need a reload to pick up new cached assets.
+- Never cache audio/video streams (and never store them offline) — this is a hard requirement.
