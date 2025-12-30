@@ -142,7 +142,7 @@ export default function CalendarPage() {
             </div>
 
             <div className="grid grid-cols-7 gap-y-3 text-center text-xs">
-              {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
+              {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
                 <div key={d} className="font-medium text-muted-foreground">
                   {d}
                 </div>
