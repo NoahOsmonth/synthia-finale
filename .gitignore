@@ -1,36 +1,27 @@
+# ======================
 # Dependencies
+# ======================
 node_modules/
 .pnp/
 .pnp.js
+.pnp.cjs
 
-# Testing
-coverage/
-*.lcov
-.nyc_output/
-*.coverage
-
+# ======================
 # Next.js
+# ======================
 .next/
 out/
+
+# ======================
+# Build outputs
+# ======================
 build/
 dist/
-
-# Production
 *.tsbuildinfo
 
-# Misc
-.DS_Store
-*.pem
-Thumbs.db
-
-# Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Local env files
+# ======================
+# Environment files
+# ======================
 .env
 .env*.local
 .env.production
@@ -38,18 +29,51 @@ lerna-debug.log*
 .env.test
 .env.staging
 
+# ======================
+# Debug logs
+# ======================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# ======================
+# Testing
+# ======================
+coverage/
+*.lcov
+.nyc_output/
+*.coverage
+htmlcov/
+
+# ======================
 # Vercel
+# ======================
 .vercel
 
-# TypeScript
-*.tsbuildinfo
+# ======================
+# Turbo
+# ======================
+.turbo
 
+# ======================
+# Linters & Formatters
+# ======================
+.eslintcache
+.prettiercache
+.stylelintcache
+
+# ======================
 # Python
+# ======================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+<<<<<<< HEAD
 build/
 develop-eggs/
 dist/
@@ -60,21 +84,27 @@ parts/
 sdist/
 var/
 wheels/
+=======
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+>>>>>>> 4730ce9ae579afca54e42d340e05d260facd6cf5
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # Virtual Environment
 venv/
 ENV/
-env/
-.venv
+.venv/
 
-# PyCharm
+# ======================
+# IDEs & Editors
+# ======================
 .idea/
 
-# VS Code
+# VS Code (keep shared config)
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
@@ -85,26 +115,21 @@ env/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pytest
-.pytest_cache/
-.coverage
-htmlcov/
+# Editor swap files
+*.swp
+*.swo
+*~
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
+# ======================
 # Supabase
+# ======================
 .supabase/
 supabase/.branches
 supabase/.temp
 
-# Logs
-logs/
-*.log
-
-# OS
+# ======================
+# OS-specific
+# ======================
 .DS_Store
 .DS_Store?
 ._*
@@ -113,56 +138,47 @@ logs/
 ehthumbs.db
 Thumbs.db
 
-# Turbo
-.turbo
-
-# ESLint
-.eslintcache
-
-# Prettier
-.prettiercache
-
-# Stylelint
-.stylelintcache
-
+# ======================
 # Temporary files
+# ======================
 tmp/
 temp/
 *.tmp
 *.temp
+logs/
 
-# Lock files (optional - uncomment if you want to ignore them)
+# ======================
+# Lock files (optional)
+# ======================
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
 
+# ======================
 # Database
+# ======================
 *.db
 *.sqlite
 *.sqlite3
 
+# ======================
 # Backup files
+# ======================
 *.bak
 *.backup
-*~
+*.pem
 
-# Editor swap files
-*.swp
-*.swo
-*~
-
-# Docker
-.dockerignore
-
-# AWS
+# ======================
+# Infrastructure (if used)
+# ======================
 .aws-sam/
-
-# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
 
+# ======================
 # Large media files
+# ======================
 legacy/frontend-vite/assets/stock-video.mp4
 public/media/stock-video.mp4
