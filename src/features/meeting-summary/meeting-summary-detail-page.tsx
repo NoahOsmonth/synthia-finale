@@ -113,7 +113,7 @@ export default function MeetingSummaryDetailPage({ id }: { id: string }) {
                     <FileText className="h-6 w-6" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium">Final_Proposal_v2.pdf</div>
+                    <div className="truncate text-sm font-medium">Final_Proposal_v3.pdf</div>
                     <div className="mt-1 text-xs text-muted-foreground">Uploaded by {meetingData.organizer} • 2.4 MB</div>
                     <div className="mt-3 flex gap-3 text-xs font-medium">
                       <button className="text-primary hover:underline">View</button>

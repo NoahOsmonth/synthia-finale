@@ -123,7 +123,7 @@ const MeetingSummaryDetail: React.FC = () => {
                     <FileText className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">Final_Proposal_v2.pdf</h4>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">Final_Proposal_v3.pdf</h4>
                     <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">Uploaded by Klariz Habla • 2.4 MB</p>
                     <div className="flex gap-3 mt-3">
                       <button className="text-xs font-medium text-violet-600 dark:text-violet-400 hover:underline">View</button>
