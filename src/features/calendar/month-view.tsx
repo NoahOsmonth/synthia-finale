@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -75,19 +74,6 @@ export default function CalendarMonthView({
                 >
                   {dayObj.day}
                 </button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hidden md:inline-flex"
-                  aria-label="Add new event"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onNewEvent();
-                  }}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
               </div>
 
               <div className="space-y-1">
