@@ -1,194 +1,210 @@
 # AGENTS.md — Intelligent Meeting Management System (IMMS)
 
-This file tells coding agents how to work in this repo: structure, rules, and the frontend contract that must not be broken.
+Repo instructions for coding agents. Keep it simple, consistent, and safe.
 
 ---
 
 ## 0) Prime Directive (Non‑Negotiables)
 
-1) **Client-direct transcription only**
+1) Client-direct transcription only
 - Live audio is handled strictly in the browser.
-- Flow: **Browser (AudioWorklet) → Google STT WebSocket**
-- Backend must **never** proxy raw audio streams.
+- Flow: Browser (AudioWorklet/Media) → Google STT WebSocket.
+- Backend/services must never proxy raw live audio streams.
 
-2) **Backend is Intelligence + Data Management**
-- Summarization, action items, RAG (vector search), CRUD, orchestration.
+2) Server responsibilities
+- Data + orchestration + post‑meeting intelligence (summaries, action items, RAG indexing, reports).
 - No live audio processing.
 
-3) **Taglish-first**
+3) Taglish-first
 - Preserve Taglish as spoken.
-- Do **not** “correct” Tagalog into English unless explicitly asked.
+- Do NOT “correct” Tagalog into English unless explicitly asked.
+- When improving clarity, do it in summaries, not by rewriting the raw transcript.
 
-4) **Supabase is the source of truth**
-- If a transcript is edited in UI, DB state overrides caches/derived results.
+4) Appwrite is the source of truth
+- Appwrite Databases/Auth/Teams/Permissions govern access.
+- If a user edits transcript text, the latest stored version is authoritative.
 
-5) **Security**
-- Never introduce secrets into code or commits.
-- Never log raw access tokens / API keys.
+5) Security
+- Never commit secrets.
+- Never log raw tokens / API keys.
+- LLM calls must run server-side (functions/service), never from the browser.
 
 ---
 
-## 1) Commands Agents Should Use
+## 1) Commands (Frontend)
 
-### Frontend (root Next.js app)
 - Install: `npm install`
 - Dev: `npm run dev`
 - Build: `npm run build`
 - Lint: `npm run lint`
 - Typecheck: `npm run typecheck`
 
-### “Before you say done”
-- Frontend changes: run `npm run typecheck` + `npm run lint` + `npm run build` (fix only relevant failures).
+Before “done”:
+- Run `npm run typecheck` + `npm run lint` + `npm run build` (fix relevant failures only).
 
 ---
 
-## 2) Repo Map (Root Next.js Frontend)
+## 2) Repo Map (Current + Planned)
 
-```text
+Current:
 root/
-├── src/                          # Next.js App Router + feature modules
-├── public/                       # static assets (logos, videos, etc.)
-├── legacy/                       # archived code (do not extend)
-│   └── frontend-vite/            # legacy Vite frontend (slated for removal)
-├── backend/                      # legacy backend folder (out of scope here)
-├── package.json
+├── src/                  # Next.js App Router + features
+├── public/               # static assets
+├── legacy/               # archived (do not extend)
 └── AGENTS.md
-```
+
+Planned (when backend code starts):
+root/
+├── src/
+├── services/
+│   ├── ai/               # Agno multi-agent workflows (Python)
+│   ├── appwrite/         # provisioning + server-only helpers
+│   └── conferencing/     # plugNMeet integration (future)
+├── scripts/
+│   └── appwrite/         # provision/migrations
+└── legacy/
+
+Rule:
+- Never put backend/service code inside `src/`.
 
 ---
 
-## 3) Frontend Structure (Anti‑Clutter Rules)
+## 3) Frontend Structure (Anti‑Clutter)
 
-### Goal: route files are thin; feature code is grouped (avoid “flat dumping”)
+- Keep `src/app/**` route files thin (composition only).
+- Business UI/logic lives in `src/features/**`.
+- Shared shell/navigation stays in `src/components/shared/**` (keep it small).
+- UI primitives in `src/components/ui/**` (shadcn style).
+- Cross-feature hooks: `src/hooks/**`.
+- Utilities: `src/lib/**`.
 
-**Keep `src/app/**` thin**
-- Route files should mostly compose feature modules (no giant pages).
-- Prefer: `src/app/(app)/dashboard/page.tsx` → `src/features/dashboard/dashboard-page.tsx`
-
-**Feature-first organization**
-- Page/domain logic: `src/features/<feature>/...`
-- Feature internals (when a feature grows): `src/features/<feature>/{components,hooks,lib,types}/...`
-- Shared layout/navigation: `src/components/shared/...` (keep this small: shell, header, sidebar)
-- UI primitives (shadcn-style): `src/components/ui/...`
-- Reusable hooks (cross-feature): `src/hooks/...`
-- Utilities: `src/lib/...`
-
-**Do not re-introduce React Router**
-- Navigation is Next.js App Router only (`next/link`, `next/navigation`).
+Do not add React Router. Use Next App Router only.
 
 ---
 
-## 4) Transcription Contract (Client ↔ Backend)
+## 4) Appwrite (Mandatory Usage Rules)
 
-### Client responsibilities
-- Capture audio, stream directly to Google STT.
-- Convert interim results to finalized transcript “segments”.
-- Send only finalized segments to backend for persistence.
+Appwrite permissions + roles are the access control system. Use teams/roles and document permissions. :contentReference[oaicite:0]{index=0}
 
-### Backend responsibilities
-- Store segments, associate with meeting/session.
-- Trigger post-processing: summarization, action items, embeddings + pgvector indexing for RAG.
+### SDK usage
+- All Appwrite calls must go through wrappers in `src/lib/appwrite/*`.
+- No direct Appwrite SDK calls scattered across features.
 
-### Prohibited changes
-- Do not add server-side audio streaming/proxying.
-- Do not auto-translate Taglish transcripts.
+### Schema strategy (Versioned collections)
+- Never change a “live” collection schema in-place.
+- Any schema change => create a new collection version:
+  - `meetings_v1` → `meetings_v2`
+- Keep old versions read-only for legacy reads/migrations.
 
-## 5) Mobile + PWA (Mandatory)
+### Immutable content rule (important)
+- Do not overwrite raw transcripts/summaries.
+- Use versioning:
+  - `transcript_versions_v1` with `supersedesId`, `version`, `isCurrent`
+  - `summary_versions_v1` same idea
+- Allowed in-place updates: `status`, `processingState`, timestamps, error info.
 
-### Mobile-first baseline
-- Every new screen must work at **360×640** without horizontal scroll.
-- Primary actions must be reachable on mobile (bottom/within thumb zone).
-- Avoid desktop-only patterns on mobile:
-  - Sidebars → **bottom tabs** or **sheet (drawer) nav**
-  - Large tables → **stacked cards** or **row details sheet**
-  - Dialogs → **full-screen sheet** on mobile
-- Always respect notches: use safe-area padding (`env(safe-area-inset-*)`) in shells/footers.
+### Permission patterns (required)
+- Meeting documents: readable by meeting members/team; writable by organizers/admins.
+- Role-based summaries: each user summary document must be readable only by:
+  - that user (+ optionally org admin) via document permissions.
 
-### Breakpoints (standard)
-- Mobile: `< 768px` (`md` breakpoint)
-- Tablet: `768–1023px`
-- Desktop: `>= 1024px`
+---
 
-### Touch target standards
-- Minimum tap target: **44×44px** (buttons, icons, list rows, close controls).
-- Critical call controls (mic/camera/leave): prefer **56px** button height on mobile.
-- Inputs on mobile must be `>= 16px` font-size to prevent iOS zoom-on-focus.
+## 5) Meeting Lifecycle (Contracts)
 
-### Navigation rule (no duplicated pages)
-- Do NOT create separate “/mobile” routes.
-- Use one App Router tree; mobile vs desktop differences live in the **shell/navigation components** only.
+Meeting statuses (suggested):
+- `scheduled` → `recording` → `processing` → `ready` (or `failed`)
 
-### Navigation patterns (implemented)
-- Desktop primary navigation: left sidebar (`src/components/shared/sidebar.tsx`), visible at `md+`.
-- Mobile primary navigation: bottom tabs (`src/components/shared/bottom-nav.tsx`), visible below `md`.
-- Mobile secondary navigation: hamburger + drawer (`src/components/shared/nav-drawer.tsx`).
-- Route files stay thin; mobile/desktop deltas happen in the shell (`src/components/shared/app-shell.tsx`) and UI components.
+At end of meeting:
+- Client finalizes transcript segments upload.
+- Client sets meeting `status=processing`.
+- Server pipeline generates:
+  - meeting summary
+  - action items / decisions
+  - report output (if requested)
+  - series state update (if in series)
 
-### Modal patterns (implemented)
-- Use **Sheet** for mobile-first overlays (`src/components/ui/sheet.tsx`):
-  - Mobile: full-screen slide-up sheet (`h-dvh`), safe-area aware
-  - Desktop: centered dialog-style panel
-- Avoid bespoke, page-local modal stacks; prefer shared primitives.
+---
 
-### Layout primitives (Required for all screens)
+## 6) Mobile + PWA (Required)
 
-**All new screens must use standardized layout components:**
+Baseline:
+- Every screen must work at 360×640 without horizontal scroll.
+- Touch targets >= 44×44px; inputs font-size >= 16px on mobile.
 
-1. **Screen container** (`src/components/shell/screen.tsx`)
-   - Wrap all page content in `<Screen>`
-   - Use `<Screen.Header>` for page title/description
-   - Use `<Screen.Content>` for main content
-   - Variants: `fullWidth` (edge-to-edge), `noPadding` (custom layout)
-   - **Do NOT** manually add padding/background divs
+No duplicated routes:
+- Do not create `/mobile` routes. One route tree only.
 
-2. **Primary actions** (`src/components/shell/primary-action.tsx`)
-   - Use `<PrimaryAction>` for main page actions (New, Create, Add)
-   - Mobile: renders as FAB (bottom-right, above bottom-nav)
-   - Desktop: renders as inline button
-   - **Do NOT** create custom FABs or sticky CTAs per page
+Required layout primitives (create if missing; reuse always):
+- `src/components/shell/Screen` (safe-area + scroll + spacing)
+- `src/components/shell/PrimaryAction` (mobile FAB / desktop button)
+- `src/components/shell/Panel` (mobile sheet / desktop side panel)
+- `src/components/ui/ResponsiveTable` (desktop table / mobile cards)
 
-3. **Secondary surfaces** (`src/components/shell/panel.tsx`)
-   - Use `<Panel>` for details, filters, settings
-   - Mobile: full-screen sheet
-   - Desktop: side panel (left/right, fixed/overlay)
-   - **Do NOT** use raw `<Sheet>` for page-level panels (Sheet is for dialogs/modals only)
+### Connectivity reality (mobile)
+- When internet drops, live transcription stops (WebSocket). UX must show this clearly.
 
-4. **Data display** (`src/components/ui/responsive-table.tsx`)
-   - Use `<ResponsiveTable>` for lists/tables
-   - Desktop: table layout
-   - Mobile: stacked cards
-   - Enable virtualization for large datasets (`virtualizeMobile={true}`)
+Offline strategy (choose one, be explicit):
+A) Strict privacy mode (default)
+- No offline audio storage.
+- If offline, show “Transcription paused — internet required”. User may continue meeting but transcript will have a gap marker.
 
-**Enforcement:**
-- Route files (`src/app/**/page.tsx`) must only import feature pages
-- Feature pages (`src/features/**/`) must use these primitives
-- Code reviews must reject manual layout implementation
+B) Resilient mode (opt-in)
+- Temporarily buffer audio chunks in IndexedDB while offline.
+- On reconnect, upload only missing chunks for post-meeting “gap recovery” transcription.
+- Auto-delete buffered audio after successful recovery.
+- Never cache audio via service worker.
 
-### Transcription on mobile (high-risk UX)
-- Must handle: mic permission, interruptions, network drops, screen lock.
-- UI must show a persistent “Recording/Transcribing” state (banner or docked bar).
-- If a browser cannot support the required streaming path, show a clear “unsupported” UX.
-- NEVER route raw audio through backend as a mobile workaround.
+---
 
-### Performance + usability
-- Lists must be virtualized when large.
-- Don’t trap users in modals; back/close must be obvious and reachable.
-- Avoid sticky stacks that consume screen height on mobile (header+tabs+filters+banner).
+## 7) AI / Agents (Agno)
 
-### PWA requirements
-- Keep app installable: `manifest.webmanifest`, icons, theme color, `display: standalone`.
-- Add a service worker for:
-  - shell caching
-  - offline fallback screen for library browsing
-- Never cache or store raw audio; transcripts/summaries only.
+We use Agno for multi-agent workflows (agents/teams/workflows, memory/knowledge, etc.). :contentReference[oaicite:1]{index=1}
 
-### Connectivity + install UX (implemented)
-- Offline indicator banner: `src/components/shared/offline-banner.tsx`
-- Install prompt banner (mobile-only): `src/components/shared/install-prompt.tsx`
-- Transcription banner: `src/components/features/mobile-transcription-banner.tsx`
+Rules:
+- LLM calls happen server-side only (services/functions).
+- All outputs must be stored with provenance:
+  - model id
+  - prompt/version
+  - inputs used (meeting id + series id + chunk ids)
+- Do not rewrite raw transcript; produce “normalized” views separately if needed.
 
-### PWA update strategy (required behavior)
-- Service worker lives at `public/sw.js` and must be treated as a **release artifact**.
-- When changing offline behavior or cache policy, bump cache keys in `public/sw.js` (e.g., `synthia-shell-v2`) to force refresh.
-- Expect update semantics: users may need a reload to pick up new cached assets.
-- Never cache audio/video streams (and never store them offline) — this is a hard requirement.
+### Agent roles (planned)
+- Transcript QA Agent: validates segments, flags low-confidence spans, adds gap markers.
+- Entity Resolver Agent: maps speaker names to org directory (Appwrite users/teams) without altering raw text.
+- Summarizer Agent: produces meeting summary + decisions + action items.
+- Series Memory Agent: updates rolling series state.
+- Template Selector Agent (RAG): selects best report template from stored templates.
+- Role Personalizer Agent: generates per-user summary views (permissions enforced).
+
+---
+
+## 8) Meeting Series (Required)
+
+- Support manual series linking (must-have).
+- Optionally auto-suggest series by:
+  title similarity + participant overlap + time pattern.
+
+Series state:
+- Rolling summary, open action items, decision log, topic threads.
+
+---
+
+## 9) Plug‑N‑Meet (Future Integration)
+
+Plug‑N‑Meet is a self-hostable open-source web conferencing system. :contentReference[oaicite:2]{index=2}
+
+Rules:
+- Treat conferencing as a provider module (`services/conferencing/*`).
+- Meeting record stores `conferenceProvider` + `roomId` + join metadata.
+- Conferencing must not be required for transcription/summarization to function.
+
+---
+
+## 10) Quality Bar
+
+A change is done when:
+- It respects Prime Directive.
+- It does not introduce new 800–1000 line pages (split into feature modules).
+- It updates docs/contracts if flows change.
+- It passes lint/typecheck/build for frontend.
