@@ -105,18 +105,18 @@ export default function LandingPage() {
                   onMouseEnter={() => setActiveFeature(index)}
                   onMouseLeave={() => setActiveFeature(null)}
                   className={cn(
-                    "group cursor-pointer overflow-hidden transition-all duration-300",
+                    "group cursor-pointer overflow-hidden transition-all duration-300 h-full",
                     isActive ? "border-primary/40 shadow-lg shadow-primary/10" : "hover:shadow-md"
                   )}
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="px-8 py-6 h-full">
                     <div
                       className={cn(
-                        "mb-4 flex h-11 w-11 items-center justify-center rounded-xl border bg-muted text-muted-foreground transition-colors",
+                        "mb-6 flex h-12 w-12 items-center justify-center rounded-xl border bg-muted text-muted-foreground transition-colors",
                         isActive && "border-primary/30 bg-primary/10 text-primary"
                       )}
                     >
-                      <Icon className={cn("h-5 w-5", isActive && "animate-float-soft")} />
+                      <Icon className={cn("h-6 w-6", isActive && "animate-float-soft")} />
                     </div>
                     <div className="text-lg font-semibold">{feature.title}</div>
                     <div className="mt-2 text-sm text-muted-foreground">{feature.description}</div>
