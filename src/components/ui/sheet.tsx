@@ -194,8 +194,9 @@ export function SheetContent({ className, children }: { className?: string; chil
         className={cn(
           "absolute inset-x-0 bottom-0 max-h-dvh overflow-hidden border bg-background shadow-xl outline-none",
           "transition-transform duration-200 ease-out",
-          open ? "translate-y-0" : "translate-y-full",
-          "h-dvh rounded-t-2xl md:inset-y-1/2 md:left-1/2 md:right-auto md:h-auto md:max-h-[85vh] md:w-full md:max-w-lg md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl",
+          "h-dvh rounded-t-2xl md:fixed md:inset-1/2 md:bottom-auto md:h-auto md:max-h-[85vh] md:w-full md:max-w-lg md:rounded-xl",
+          "translate-y-full md:translate-x-0 md:-translate-y-1/2 md:-translate-x-1/2",
+          open && "translate-y-0",
           "pb-safe-bottom pt-safe-top",
           className
         )}
