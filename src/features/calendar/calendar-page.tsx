@@ -142,8 +142,8 @@ export default function CalendarPage() {
             </div>
 
             <div className="grid grid-cols-7 gap-y-3 text-center text-xs">
-              {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
-                <div key={d} className="font-medium text-muted-foreground">
+              {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
+                <div key={i} className="font-medium text-muted-foreground">
                   {d}
                 </div>
               ))}
@@ -237,7 +237,7 @@ export default function CalendarPage() {
               <div className="space-y-3">
                 {events.slice(0, 4).map((e) => (
                   <Card key={e.id}>
-                    <CardContent className="space-y-2">
+                    <CardContent className="pt-4 pb-4 space-y-2 md:pt-4 md:pb-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <div className="truncate text-sm font-semibold">{e.title}</div>

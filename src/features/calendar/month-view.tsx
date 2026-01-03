@@ -37,9 +37,9 @@ export default function CalendarMonthView({
 }) {
   return (
     <div className="grid h-full grid-cols-7 overflow-hidden rounded-lg border bg-background shadow-sm">
-      {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
+      {["S", "M", "T", "W", "T", "F", "S"].map((day, i) => (
         <div
-          key={day}
+          key={i}
           className="border-b border-r bg-muted/40 p-2 text-center text-[10px] font-semibold uppercase tracking-wide text-muted-foreground last:border-r-0 md:p-3 md:text-xs"
         >
           {day}
