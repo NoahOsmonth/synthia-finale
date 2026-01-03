@@ -78,7 +78,7 @@ export default function DashboardPage() {
         <div className="space-y-6 lg:col-span-2">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
-              <CardContent className="p-5">
+              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="mb-2 text-xs font-medium text-muted-foreground">Total Tasks</p>
@@ -92,7 +92,7 @@ export default function DashboardPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-5">
+              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="mb-2 text-xs font-medium text-muted-foreground">Active Workspaces</p>
@@ -106,7 +106,7 @@ export default function DashboardPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-5">
+              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="mb-2 text-xs font-medium text-muted-foreground">Meetings Today</p>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
 
         <div className="space-y-4">
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="pt-4 pb-4 md:pt-4 md:pb-4">
               <div className="mb-2 flex items-center justify-between">
                 <Button variant="ghost" size="icon" aria-label="Previous month">
                   <svg
@@ -259,7 +259,7 @@ export default function DashboardPage() {
           </Card>
 
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="pt-4 pb-4 md:pt-4 md:pb-4">
               <div className="mb-4">
                 <h3 className="text-sm font-bold">Schedule</h3>
                 <p className="mt-1 text-[10px] text-muted-foreground">Today - November 18, 2025</p>
@@ -290,7 +290,7 @@ export default function DashboardPage() {
 
           <Card className="relative overflow-hidden border-red-200 dark:border-red-900/50">
             <div className="absolute left-0 top-0 h-full w-1.5 bg-red-500" />
-            <CardContent className="p-4 pl-6">
+            <CardContent className="pt-4 pb-4 pl-6 md:pt-4 md:pb-4 md:pl-6">
               <div className="mb-3 flex items-center justify-between">
                 <div>
                   <h3 className="flex items-center gap-2 text-sm font-bold">Missed Meetings</h3>

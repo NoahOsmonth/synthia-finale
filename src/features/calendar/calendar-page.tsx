@@ -237,7 +237,7 @@ export default function CalendarPage() {
               <div className="space-y-3">
                 {events.slice(0, 4).map((e) => (
                   <Card key={e.id}>
-                    <CardContent className="space-y-2">
+                    <CardContent className="pt-4 pb-4 space-y-2 md:pt-4 md:pb-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <div className="truncate text-sm font-semibold">{e.title}</div>
