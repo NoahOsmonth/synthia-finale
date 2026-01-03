@@ -73,10 +73,23 @@ __pycache__/
 *$py.class
 *.so
 .Python
+<<<<<<< HEAD
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+=======
 .pytest_cache/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+>>>>>>> 4730ce9ae579afca54e42d340e05d260facd6cf5
 *.egg-info/
 .installed.cfg
 *.egg
