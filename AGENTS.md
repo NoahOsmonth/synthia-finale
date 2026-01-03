@@ -47,22 +47,41 @@ Before “done”:
 ## 2) Repo Map (Current + Planned)
 
 Current:
-root/
-├── src/                  # Next.js App Router + features
-├── public/               # static assets
-├── legacy/               # archived (do not extend)
-└── AGENTS.md
-
-Planned (when backend code starts):
+```
 root/
 ├── src/
+│   ├── app/              # Next.js App Router (route groups)
+│   │   ├── (app)/        # Main app routes (dashboard, meetings, etc.)
+│   │   ├── (auth)/       # Auth routes (login)
+│   │   ├── (fullscreen)/ # Full-screen experiences (meeting-room, recording)
+│   │   └── (marketing)/  # Landing/marketing pages
+│   ├── components/
+│   │   ├── features/     # Feature-specific components
+│   │   ├── providers/    # Context providers (theme, etc.)
+│   │   ├── shared/       # App shell, nav, banners
+│   │   ├── shell/        # Layout primitives (Screen, Panel, PrimaryAction)
+│   │   └── ui/           # shadcn-style UI primitives
+│   ├── features/         # Business logic + feature pages
+│   ├── hooks/            # Cross-feature hooks (use-mobile, use-swipe, etc.)
+│   └── lib/              # Utilities
+├── public/               # Static assets, PWA manifest, service worker
+├── docs/                 # Documentation (MOBILE_TESTING.md, etc.)
+├── notes/                # Reference materials
+└── AGENTS.md
+```
+
+Planned (when backend code starts):
+```
+root/
+├── src/                  # (unchanged)
 ├── services/
 │   ├── ai/               # Agno multi-agent workflows (Python)
 │   ├── appwrite/         # provisioning + server-only helpers
 │   └── conferencing/     # plugNMeet integration (future)
 ├── scripts/
 │   └── appwrite/         # provision/migrations
-└── legacy/
+└── ...
+```
 
 Rule:
 - Never put backend/service code inside `src/`.
@@ -75,8 +94,17 @@ Rule:
 - Business UI/logic lives in `src/features/**`.
 - Shared shell/navigation stays in `src/components/shared/**` (keep it small).
 - UI primitives in `src/components/ui/**` (shadcn style).
+- Layout primitives in `src/components/shell/**` (Screen, Panel, PrimaryAction).
+- Feature-specific components in `src/components/features/**`.
+- Context providers in `src/components/providers/**`.
 - Cross-feature hooks: `src/hooks/**`.
 - Utilities: `src/lib/**`.
+
+Route groups:
+- `(app)/` — Main authenticated app routes
+- `(auth)/` — Authentication flows
+- `(fullscreen)/` — Immersive experiences (meeting room, recording)
+- `(marketing)/` — Landing and public pages
 
 Do not add React Router. Use Next App Router only.
 
@@ -135,11 +163,20 @@ Baseline:
 No duplicated routes:
 - Do not create `/mobile` routes. One route tree only.
 
-Required layout primitives (create if missing; reuse always):
-- `src/components/shell/Screen` (safe-area + scroll + spacing)
-- `src/components/shell/PrimaryAction` (mobile FAB / desktop button)
-- `src/components/shell/Panel` (mobile sheet / desktop side panel)
-- `src/components/ui/ResponsiveTable` (desktop table / mobile cards)
+Required layout primitives (already implemented in `src/components/shell/`):
+- `Screen` — safe-area + scroll + spacing
+- `PrimaryAction` — mobile FAB / desktop button
+- `Panel` — mobile sheet / desktop side panel
+
+Additional UI primitives (in `src/components/ui/`):
+- `ResponsiveTable` — desktop table / mobile cards
+
+Cross-feature hooks (in `src/hooks/`):
+- `use-mobile` — responsive breakpoint detection
+- `use-swipe` — touch gesture handling
+- `use-long-press` — long-press gesture
+- `use-viewport` — viewport dimensions
+- `use-user-media` — camera/microphone access
 
 ### Connectivity reality (mobile)
 - When internet drops, live transcription stops (WebSocket). UX must show this clearly.
