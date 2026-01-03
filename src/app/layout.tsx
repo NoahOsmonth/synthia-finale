@@ -3,6 +3,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ServiceWorkerRegister } from "@/components/shared/service-worker-register";
+import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
+import { ReactPlugin } from "@21st-extension/react";
 
 export const metadata: Metadata = {
   applicationName: "Synthia IMMS",
@@ -34,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ServiceWorkerRegister />
           {children}
