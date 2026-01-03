@@ -166,18 +166,19 @@ export default function CalendarPage() {
 
           <div>
             <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">My Calendars</h4>
-            <div className="space-y-3">
-              {["Personal", "Work", "Family"].map((c, idx) => (
-                <label key={c} className="group flex cursor-pointer items-center">
-                  <input
-                    type="checkbox"
-                    defaultChecked={idx < 2}
-                    className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
-                  />
-                  <span className="ml-3 text-sm text-muted-foreground transition-colors group-hover:text-foreground">
-                    {c}
-                  </span>
-                </label>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { name: "Personal", color: "bg-violet-500", bgLight: "bg-violet-100", textDark: "text-violet-700", bgDark: "dark:bg-violet-900/30", textDarkMode: "dark:text-violet-300" },
+                { name: "Work", color: "bg-blue-500", bgLight: "bg-blue-100", textDark: "text-blue-700", bgDark: "dark:bg-blue-900/30", textDarkMode: "dark:text-blue-300" },
+                { name: "Family", color: "bg-emerald-500", bgLight: "bg-emerald-100", textDark: "text-emerald-700", bgDark: "dark:bg-emerald-900/30", textDarkMode: "dark:text-emerald-300" }
+              ].map((cal) => (
+                <button
+                  key={cal.name}
+                  className={`group flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${cal.bgLight} ${cal.textDark} ${cal.bgDark} ${cal.textDarkMode} hover:opacity-80`}
+                >
+                  <span className={`h-2.5 w-2.5 rounded-full ${cal.color}`} />
+                  {cal.name}
+                </button>
               ))}
             </div>
           </div>
