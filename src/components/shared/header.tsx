@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Menu, Moon, Plus, Search, Sun, X } from "lucide-react";
+import { Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,6 @@ export function AppHeader({ title, onOpenMenu }: { title: string; onOpenMenu?: (
   const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-  const handleNewEvent = () => window.dispatchEvent(new Event("open-new-event-modal"));
 
   return (
     <div className="border-b bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50 pt-safe-top">
@@ -47,13 +46,6 @@ export function AppHeader({ title, onOpenMenu }: { title: string; onOpenMenu?: (
           >
             {mobileSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
           </Button>
-
-          {title === "Calendar" && (
-            <Button onClick={handleNewEvent} className="gap-2">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">New Event</span>
-            </Button>
-          )}
 
           <Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={toggleTheme}>
             <Sun className="hidden h-5 w-5 text-amber-500 dark:block" />

@@ -9,6 +9,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: __dirname,
+  // Disable caching in development for faster refresh
+  headers: async () => [
+    {
+      source: "/:path*",
+      headers: [
+        { key: "Cache-Control", value: "no-store, must-revalidate" }
+      ]
+    }
+  ],
   images: {
     remotePatterns: [
       {
