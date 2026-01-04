@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowLeft, MessageSquare, Pause, Square, Volume2 } from "lucide-react";
-import Image from "next/image";
+import { ArrowLeft, Pause, Square, Volume2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function RecordingPage() {
@@ -10,9 +9,9 @@ export default function RecordingPage() {
   const [isRecording, setIsRecording] = useState(true);
 
   return (
-    <div className="min-h-dvh bg-muted/30">
-      <div className="bg-muted/30 p-6 md:p-8">
-        <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen bg-background md:h-screen md:overflow-hidden">
+      <div className="p-6 md:p-8 md:h-full">
+        <div className="mx-auto max-w-7xl md:h-full">
           <button
             onClick={() => router.push("/meetings")}
             className="mb-6 flex items-center gap-2 font-medium text-primary transition-colors hover:text-primary/80"
@@ -21,9 +20,9 @@ export default function RecordingPage() {
             Back to Meetings
           </button>
 
-          <div className="grid h-full grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="flex flex-col lg:col-span-2">
-              <div className="relative flex h-full flex-col items-center justify-center overflow-hidden rounded-2xl border bg-background p-8 shadow-md">
+          <div className="grid h-full grid-cols-1 gap-6">
+            <div className="flex flex-col h-full">
+              <div className="relative flex h-full min-h-[500px] flex-col items-center justify-center overflow-hidden rounded-2xl border bg-background p-8 shadow-md md:min-h-full md:rounded-3xl">
                 <div className="relative flex items-center justify-center">
                   <div className="pointer-events-none absolute h-32 w-32 animate-pulse rounded-full bg-primary/10" />
                   <div className="relative z-10 rounded-full bg-gradient-to-br from-primary to-fuchsia-600 p-6 shadow-lg">
@@ -59,52 +58,6 @@ export default function RecordingPage() {
                   <button className="rounded-full bg-muted p-4 text-foreground transition-colors hover:bg-muted/70" aria-label="Audio settings">
                     <Volume2 className="h-6 w-6" />
                   </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col lg:col-span-1">
-              <div className="flex h-full flex-col rounded-2xl border bg-background p-6 shadow-md">
-                <div className="mb-4 flex items-center justify-between border-b pb-2">
-                  <h3 className="flex items-center font-semibold">
-                    <MessageSquare className="mr-2 h-5 w-5 text-primary" />
-                    Live Transcription
-                  </h3>
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Auto-scrolling</span>
-                </div>
-
-                <div className="flex-1 space-y-4 overflow-y-auto pr-2">
-                  {[
-                    {
-                      name: "Peter Parker",
-                      time: "10:00 AM",
-                      img: "https://i.pravatar.cc/100?img=1",
-                      text: "Alright, let's get started. Thanks everyone for joining. Today we need to finalize the Q4 roadmap."
-                    },
-                    {
-                      name: "Sarah Chen",
-                      time: "10:01 AM",
-                      img: "https://i.pravatar.cc/100?img=5",
-                      text: "I have the user research data ready to present. It strongly suggests we focus on mobile improvements first."
-                    }
-                  ].map((t) => (
-                    <div key={t.time} className="flex gap-3">
-                      <Image
-                        src={t.img}
-                        alt={t.name}
-                        width={32}
-                        height={32}
-                        className="h-8 w-8 flex-shrink-0 rounded-full bg-muted"
-                      />
-                      <div>
-                        <p className="mb-1 text-xs font-medium text-muted-foreground">
-                          {t.name}
-                          <span className="ml-2 font-normal opacity-70">{t.time}</span>
-                        </p>
-                        <p className="text-sm text-muted-foreground">{t.text}</p>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>

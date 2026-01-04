@@ -7,7 +7,7 @@ import { AlertCircle, ArrowRight, CheckSquare, Users, Video } from "lucide-react
 import { Panel } from "@/components/shell/panel";
 import { Screen } from "@/components/shell/screen";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 
 interface Task {
@@ -76,69 +76,55 @@ export default function DashboardPage() {
       <Screen.Content>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <Card>
-              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="mb-2 text-xs font-medium text-muted-foreground">Total Tasks</p>
-                    <p className="text-3xl font-bold">12</p>
-                  </div>
-                  <Button variant="ghost" size="icon" aria-label="View all tasks" onClick={() => router.push("/tasks")}>
-                    <CheckSquare className="h-5 w-5" />
-                  </Button>
+          <div className="grid grid-cols-3 gap-3">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20">
+              <CardContent className="pt-4 pb-4 md:pt-4 md:pb-4">
+                <div className="flex flex-col items-center text-center">
+                  <CheckSquare className="mb-2 h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <p className="text-xs font-medium text-blue-600/70 dark:text-blue-400/70">Total Tasks</p>
+                  <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">12</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="mb-2 text-xs font-medium text-muted-foreground">Active Workspaces</p>
-                    <p className="text-3xl font-bold">2</p>
-                  </div>
-                  <Button variant="ghost" size="icon" aria-label="View workspaces" onClick={() => router.push("/collaboration")}>
-                    <Users className="h-5 w-5" />
-                  </Button>
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/20">
+              <CardContent className="pt-4 pb-4 md:pt-4 md:pb-4">
+                <div className="flex flex-col items-center text-center">
+                  <Users className="mb-2 h-5 w-5 text-purple-600 dark:text-purple-400" />
+                  <p className="text-xs font-medium text-purple-600/70 dark:text-purple-400/70">Workspaces</p>
+                  <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">2</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="pt-5 pb-5 md:pt-5 md:pb-5">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="mb-2 text-xs font-medium text-muted-foreground">Meetings Today</p>
-                    <p className="text-3xl font-bold">3</p>
-                  </div>
-                  <Button variant="ghost" size="icon" aria-label="View meetings" onClick={() => router.push("/meetings")}>
-                    <Video className="h-5 w-5" />
-                  </Button>
+            <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/30 dark:to-emerald-900/20">
+              <CardContent className="pt-4 pb-4 md:pt-4 md:pb-4">
+                <div className="flex flex-col items-center text-center">
+                  <Video className="mb-2 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <p className="text-xs font-medium text-emerald-600/70 dark:text-emerald-400/70">Today</p>
+                  <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">3</p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          <Card>
-            <CardHeader className="space-y-2">
-              <CardTitle className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Pre Meeting Heads-up
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-                <div className="flex-1">
-                  <p className="font-semibold">Tomorrow, 10:00 AM!</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
+          <Card className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-900/10">
+            <CardContent className="flex flex-col items-start gap-4 p-4 sm:flex-row sm:items-center sm:justify-between md:p-6">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 dark:bg-violet-900/30">
+                  <ArrowRight className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-violet-600 dark:text-violet-400">Pre Meeting Heads-up</p>
+                  <p className="mt-1 font-semibold">Tomorrow, 10:00 AM!</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
                     Strategic Planning and Policy Alignment Meeting - Q4 2025
                   </p>
                 </div>
-                <Button onClick={() => setBriefingOpen(true)} className="gap-2" width="mobile-full">
-                  <span>View Briefing</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
               </div>
+              <Button onClick={() => setBriefingOpen(true)} width="mobile-full">
+                View Briefing
+              </Button>
             </CardContent>
           </Card>
 
@@ -288,15 +274,15 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-red-200 dark:border-red-900/50">
-            <div className="absolute left-0 top-0 h-full w-1.5 bg-red-500" />
-            <CardContent className="pt-4 pb-4 pl-6 md:pt-4 md:pb-4 md:pl-6">
-              <div className="mb-3 flex items-center justify-between">
+          <Card className="overflow-hidden bg-red-50/50 dark:bg-red-950/10">
+            <CardContent className="pt-4 pb-4 pl-6 pr-4 md:pt-4 md:pb-4">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+                  <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                </div>
                 <div>
-                  <h3 className="flex items-center gap-2 text-sm font-bold">Missed Meetings</h3>
-                  <p className="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-red-500">
-                    <AlertCircle className="h-3 w-3" /> Action Required
-                  </p>
+                  <h3 className="text-sm font-bold">Missed Meetings</h3>
+                  <p className="text-[10px] font-medium text-red-600 dark:text-red-400">Action Required</p>
                 </div>
               </div>
 
@@ -305,12 +291,14 @@ export default function DashboardPage() {
                   { title: "Project Alpha Sync", time: "Yesterday, 2:00 PM" },
                   { title: "Client Onboarding", time: "Nov 16, 11:00 AM" }
                 ].map((m) => (
-                  <div key={m.title} className="flex flex-col gap-2 border-b pb-2 last:border-0">
-                    <div>
-                      <p className="text-xs font-bold">{m.title}</p>
-                      <p className="mt-0.5 text-[10px] text-muted-foreground">{m.time}</p>
+                  <div key={m.title} className="group flex flex-col gap-2 rounded-lg border border-red-200/50 bg-background p-3 transition-colors hover:border-red-300 dark:border-red-900/30 dark:bg-red-900/5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="text-xs font-semibold">{m.title}</p>
+                        <p className="mt-0.5 text-[10px] text-muted-foreground">{m.time}</p>
+                      </div>
                     </div>
-                    <Button variant="outline" width="mobile-full" onClick={() => router.push("/meeting-summary")}>
+                    <Button variant="outline" size="sm" width="mobile-full" className="h-8 text-xs" onClick={() => router.push("/meeting-summary")}>
                       View Summary
                     </Button>
                   </div>
